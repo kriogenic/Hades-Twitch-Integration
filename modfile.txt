@@ -1,0 +1,4 @@
+:: Start of a Twitch Integration Mod
+Import "config.lua"
+Import "event_list.lua"
+Import "twitch.lua"
