@@ -403,9 +403,11 @@ OnAnyLoad{function(triggerArgs)
 		croomname = "error"
 	end
 
-	if isconnected == 0 and CurrentRun ~= nil and CurrentRun.CurrentRoom ~= nil then
-		ModUtil.Hades.PrintDisplay( "Connecting to Twitch!", 0, Color.Blue )
-		thread(TwitchConnect)
+	if isconnected == 0 and CurrentRun ~= nil then
+		if CurrentRun.CurrentRoom ~= nil then
+			ModUtil.Hades.PrintDisplay( "Connecting to Twitch!", 0, Color.Blue )
+			thread(TwitchConnect)
+		end
 	end
 	
 	
