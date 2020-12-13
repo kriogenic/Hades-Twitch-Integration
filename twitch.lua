@@ -217,7 +217,7 @@ function TimeBetweenVote()
 	local eventCount = 0
 	
 	---DEBUGGING
-	local debugid = "DISALLOW_DASH"
+	local debugid = nil
 	local debugevent = nil
 	
 	if TwitchIntegrationEvents ~= nil then

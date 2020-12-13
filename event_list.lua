@@ -262,7 +262,7 @@ TwitchIntegrationEvents =
 	--NO DASH
 	{
 		id = "DISALLOW_DASH",
-		ui_name = "1 Minute No Dash",
+		ui_name = "NO EFFECT!",
 		weight = 1.0,
 		action = function(event)
 			RecordSpeedModifier( 0.5, 60 )
