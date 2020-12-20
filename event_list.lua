@@ -467,7 +467,7 @@ TwitchIntegrationEvents =
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[1] })
 		end,
 	},
---Give temporary boon rarity item from well shop
+--The next room that can have a chaos gate, will have one.
 	{
 		id = "TEMP_BOON_CHAOS",
 		ui_name = "Chaos Gate",
@@ -476,7 +476,7 @@ TwitchIntegrationEvents =
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[3] })
 		end,
 	},
---Give temporary boon rarity item from well shop
+--The next room that can have a infernal trove, will have one.
 	{
 		id = "TEMP_BOON_TROVE",
 		ui_name = "Infernal Trove",
@@ -485,10 +485,10 @@ TwitchIntegrationEvents =
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[4] })
 		end,
 	},
---Give temporary boon rarity item from well shop
+--The next room that can have a fishing hole, will have one.
 	{
 		id = "TEMP_BOON_FISHING",
-		ui_name = "Improve next boon",
+		ui_name = "Fishing Hole",
 		weight = 0.7,
 		action = function(event)
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[5] })
