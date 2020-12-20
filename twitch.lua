@@ -91,19 +91,19 @@ function OpenVotingWindow()
   OffsetX = xoffset, OffsetY = yoffset, Width = 300, Color = Color.White, Font = "SpectralSCLight",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Left"})
 
-  CreateTextBox({ Id = components.Background.Id, Text = "1. " .. chosentable[1].ui_name, FontSize = 16,
+  CreateTextBox({ Id = components.Background.Id, Text = "1. " .. chosentable[1].ui_name, FontSize = 20,
   OffsetX = xoffset, OffsetY = yoffset + 35, Width = 300, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Left" })
   
-  CreateTextBox({ Id = components.Background.Id, Text = "2. " .. chosentable[2].ui_name, FontSize = 16,
+  CreateTextBox({ Id = components.Background.Id, Text = "2. " .. chosentable[2].ui_name, FontSize = 20,
   OffsetX = xoffset, OffsetY = yoffset + 70, Width = 300, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Left" })
   
-  CreateTextBox({ Id = components.Background.Id, Text = "3. " .. chosentable[3].ui_name, FontSize = 16,
+  CreateTextBox({ Id = components.Background.Id, Text = "3. " .. chosentable[3].ui_name, FontSize = 20,
   OffsetX = xoffset, OffsetY = yoffset + 105, Width = 300, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Left" })
   
-  CreateTextBox({ Id = components.Background.Id, Text = "4. " .. chosentable[4].ui_name, FontSize = 16,
+  CreateTextBox({ Id = components.Background.Id, Text = "4. " .. chosentable[4].ui_name, FontSize = 20,
   OffsetX = xoffset, OffsetY = yoffset + 140, Width = 300, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Left" })
   
@@ -113,19 +113,19 @@ function OpenVotingWindow()
   OffsetX = xoffset + 240, OffsetY = yoffset, Width = 60, Color = Color.White, Font = "SpectralSCLight",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Right"})
 
-  CreateTextBox({ Id = components.Vote1.Id, Text = "(".. votes[1] ..")", FontSize = 16,
+  CreateTextBox({ Id = components.Vote1.Id, Text = "(".. votes[1] ..")", FontSize = 20,
   OffsetX = xoffset + 270, OffsetY = yoffset + 35, Width = 60, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Right" })
   
-  CreateTextBox({ Id = components.Vote2.Id, Text = "(".. votes[2] ..")", FontSize = 16,
+  CreateTextBox({ Id = components.Vote2.Id, Text = "(".. votes[2] ..")", FontSize = 20,
   OffsetX = xoffset + 270, OffsetY = yoffset + 70, Width = 60, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Right" })
   
-  CreateTextBox({ Id = components.Vote3.Id, Text = "(".. votes[3] ..")", FontSize = 16,
+  CreateTextBox({ Id = components.Vote3.Id, Text = "(".. votes[3] ..")", FontSize = 20,
   OffsetX = xoffset + 270, OffsetY = yoffset + 105, Width = 60, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Right" })
   
-  CreateTextBox({ Id = components.Vote4.Id, Text = "(".. votes[4] ..")", FontSize = 16,
+  CreateTextBox({ Id = components.Vote4.Id, Text = "(".. votes[4] ..")", FontSize = 20,
   OffsetX = xoffset + 270, OffsetY = yoffset + 140, Width = 60, Color = Color.Yellow, Font = "CrimsonTextItalic",
   ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 1}, Justification = "Right" })
 end
@@ -280,7 +280,6 @@ function CountdownVote()
 			end
 		end
 	end
-	--ModUtil.Hades.PrintDisplay( "Voting Ended!", 0, Color.Red )
 	voting = 0
 	
 	---Here is where we find which event had the most votes
@@ -336,7 +335,6 @@ function TwitchConnect() -- Here we start the twitch integration on a thread
 	--If we fail a connection
 	if isconnected ~= 1 then
 		client:close()
-		ModUtil.Hades.PrintDisplay( "Failed to connect to twitch", 0, Color.Red )
 		isconnected = 0
 	end
 	
@@ -369,13 +367,10 @@ function TwitchConnect() -- Here we start the twitch integration on a thread
 				end
 
 				--This needs more filtering, we have the message but now we need to extract the first number that is 1-4
-				ModUtil.Hades.PrintDisplay( "PVT: " .. incmessage, 0, Color.Green )
 			elseif string.find(resp,"tmi.twitch.tv 376") then -- We got the Hello Message... Join a channel
-				ModUtil.Hades.PrintDisplay( "Joining Channel", 0, Color.Blue )
 				client:send("JOIN #" .. TwitchIntegrationConfig.Username .."\r\n")
 			elseif string.find(resp, "tmi.twitch.tv JOIN") then -- We finished joining a channel.
 				channeljoined = 1
-				ModUtil.Hades.PrintDisplay( "Join Success", 1, Color.Green )
 				thread(TimeBetweenVote)
 			elseif string.find(resp,"PING :tmi.twitch.tv") then -- We reveived a PING, reply back with PONG!
 				client:send("PONG :tmi.twitch.tv\r\n")
@@ -389,7 +384,6 @@ function TwitchConnect() -- Here we start the twitch integration on a thread
 		end
 		wait(1)
 	end
-	ModUtil.Hades.PrintDisplay( "Err: " .. err, 0, Color.Red )
 	client:close()
 	isconnected = 0
 	channeljoined = 0
@@ -405,12 +399,10 @@ OnAnyLoad{function(triggerArgs)
 
 	if isconnected == 0 and CurrentRun ~= nil then
 		if CurrentRun.CurrentRoom ~= nil then
-			ModUtil.Hades.PrintDisplay( "Connecting to Twitch!", 0, Color.Blue )
 			thread(TwitchConnect)
 		end
 	end
 	
 	
 
-	--ModUtil.Hades.PrintDisplay( "Room: " .. croomname, 0, Color.Blue )
 end}
