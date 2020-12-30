@@ -77,12 +77,11 @@ TwitchIntegrationData =
   -- 45 enemy entries, minichariot is 9, ThiefImpulseMineLayerMiniboss is 5, ThiefMineLayer is 45
   EnemyNames =
   {
-    "IllusionistClone", "ShieldRangedElite", "BlastCubeFusedRegenerating", "PunchingBagUnitSuperElite", "ThiefImpulseMineLayerMiniboss", "LightSpawner", "SwarmerSuperElite",
+    "IllusionistClone", "ShieldRangedElite", "BlastCubeFusedRegenerating", "PunchingBagUnitSuperElite", "LightSpawner", "SwarmerSuperElite",
     "CrusherUnit", "ChariotSuicide", "IllusionistClone", "ShieldRangedElite", "BlastCubeFusedRegenerating", "PunchingBagUnitSuperElite", "ReflectiveMirror", "LightSpawner",
-    "SwarmerSuperElite", "CrusherUnit", "ChariotSuicide", "SatyrRangedMiniboss", "ShadeSpawnerElite", "UnstableGenerator", "HeavyMeleeSuperElite", "HeavyRangedElite",
+    "SwarmerSuperElite", "CrusherUnit", "ChariotSuicide", "ShadeSpawnerElite", "UnstableGenerator", "HeavyMeleeSuperElite", "HeavyRangedElite",
     "ShadeBowUnitSuperElite", "TimeCrystal", "Illusionist", "GunBombUnit", "HeavyRanged", "FlurrySpawner", "RangedBurrowerElite", "SplitShotUnitElite", "Harpy",
-    "HeavyRangedSplitterMinibossSuperElite", "ChariotSuperElite", "SupportShields", "BloodlessNakedBerserkerElite", "ShadeNaked", "ShadeSwordUnit", "BloodlessSelfDestructElite",
-    "RatThugMiniboss", "CrusherUnitSuperElite", "LightRanged", "HeavyMelee", "HealRanged", "ThiefMineLayer"
+    "HeavyRangedSplitterMinibossSuperElite", "ChariotSuperElite", "SupportShields", "BloodlessNakedBerserkerElite", "ShadeNaked", "ShadeSwordUnit", "BloodlessSelfDestructElite", "CrusherUnitSuperElite", "LightRanged", "HeavyMelee", "HealRanged", "ThiefMineLayer"
   },
   -- Temporary items from the well shops
   TempItems =
@@ -97,7 +96,7 @@ TwitchIntegrationEvents =
 	{
 		id = "HEALTH_PLUS",
 		ui_name = "Heal me",
-		weight =0.7,
+		weight =0.5,
 		action = function(event)
 			
 			
@@ -125,7 +124,7 @@ TwitchIntegrationEvents =
 	{
 		id = "MAX_HEALTH_PLUS",
 		ui_name = "Increase Max HP",
-		weight = 0.5,
+		weight = 0.3,
 		action = function(event)
 			ModUtil.Hades.PrintDisplay( "MAX UP", 1, Color.Green )
 			local consumableId = SpawnObstacle({ Name = "RoomRewardMaxHealthDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
@@ -134,14 +133,18 @@ TwitchIntegrationEvents =
 			ActivatedObjects[consumable.ObjectId] = consumable
 			ApplyUpwardForce({ Id = consumableId, Speed = 450 })
 			PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+      consumable.IgnorePurchase = true
 		end,
 	},
 	--Spawns a Daedalus Hammer
 	{
 		id = "SPAWN_HAMMER",
 		ui_name = "Daedalus Hammer",
-		weight = 0.5,
+		weight = 0.3,
 		action = function(event)
+      while CurrentRun.CurrentRoom.ChosenRewardType == "Devotion" and not     IsCombatEncounterActive( CurrentRun ) do
+        wait(1)
+      end
 			CreateLoot({ Name = "WeaponUpgrade", OffsetX = 100, SpawnPoint = CurrentRun.Hero.ObjectId })
 		end,
 	},
@@ -149,11 +152,14 @@ TwitchIntegrationEvents =
 	{
 		id = "SPAWN_POWERPOM",
 		ui_name = "Pom of Power",
-		weight = 0.6,
+		weight = 0.4,
 		action = function(event)
-			CreateLoot({ Name = "StackUpgrade", OffsetX = 100, SpawnPoint = CurrentRun.Hero.ObjectId })
+      while CurrentRun.CurrentRoom.ChosenRewardType == "Devotion" and not     IsCombatEncounterActive( CurrentRun ) do
+      wait(1)
+      end
+      CreateLoot({ Name = "StackUpgrade", OffsetX = 100, SpawnPoint = CurrentRun.Hero.ObjectId })
 		end,
-	},
+  },
 	--Remove a Random Boon Trait
 	{
 		id = "REMOVE_BOON",
@@ -177,7 +183,7 @@ TwitchIntegrationEvents =
 	{
 		id = "SPAWN_RANDOM_BOON",
 		ui_name = "Spawn Random Boon",
-		weight = 0.3,
+		weight = 0.2,
 		action = function(event)
 			local godname = TwitchIntegrationData.GodNames[math.random(10)]
 			while CurrentRun.CurrentRoom.ChosenRewardType == "Devotion" and not IsCombatEncounterActive( CurrentRun ) do
@@ -212,7 +218,7 @@ TwitchIntegrationEvents =
 	{
 		id = "GIVE_PLAYER_GOLD",
 		ui_name = "+100 Gold",
-		weight = 0.6,
+		weight = 0.4,
 		action = function(event)
 			local sound = "/SFX/GoldCoinPickup"
 			PlaySound({ Name = sound, ManagerCap = 28 })
@@ -247,7 +253,7 @@ TwitchIntegrationEvents =
 	{
 		id = "FILL_GOD_GAUGE",
 		ui_name = "Fill God Gauge",
-		weight = 0.6,
+		weight = 0.4,
 		action = function(event)
 			BuildSuperMeter(CurrentRun,CurrentRun.Hero.SuperMeterLimit)
 		end,
@@ -262,23 +268,23 @@ TwitchIntegrationEvents =
 	--	end,
 	--},
 	--Kills all enemies on screen (including traps)
-	{
-		id = "KILL_ALL_ENEMIES",
-		ui_name = "Kill All Enemies",
-		weight = 0.5,
-		action = function(event)
-			for enemyId, enemy in pairs(ActiveEnemies) do
-				if enemy and not enemy.IsDead then
-					Kill(enemy)
-				end
-			end
-		end,
-	},
+--	{
+		--id = "KILL_ALL_ENEMIES",
+		--ui_name = "Kill All Enemies",
+		--weight = 0.4,
+		--action = function(event)
+--			for enemyId, enemy in pairs(ActiveEnemies) do
+				--if enemy and not enemy.IsDead then
+--					Kill(enemy)
+				--end
+			--end
+		--end,
+	--},
 	--Give Darkness
 	{
 		id = "GIVE_PLAYER_DARKNESS",
 		ui_name = "+100 Darkness",
-		weight = 0.6,
+		weight = 0.4,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "RoomRewardMetaPointDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -286,13 +292,14 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 	--Give Nectar
 	{
 		id = "GIVE_PLAYER_NECTAR",
 		ui_name = "+1 Nectar",
-		weight = 0.6,
+		weight = 0.5,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "GiftDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -300,13 +307,14 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 	--Give Key
 	{
 		id = "GIVE_PLAYER_KEY",
 		ui_name = "+1 Key",
-		weight = 0.6,
+		weight = 0.4,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "LockKeyDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -314,13 +322,14 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 	--Give Blood
 	{
 		id = "GIVE_PLAYER_BLOOD",
 		ui_name = "+1 Blood",
-		weight = 0.5,
+		weight = 0.3,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "SuperLockKeyDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -328,13 +337,14 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 	--Give Gems
 	{
 		id = "GIVE_PLAYER_GEMS",
 		ui_name = "+5 Gemstones",
-		weight = 0.8,
+		weight = 0.6,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "GemDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -342,13 +352,14 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 	--Give Diamond
 	{
 		id = "GIVE_PLAYER_DIAMOND",
 		ui_name = "+1 Diamond",
-		weight = 0.4,
+		weight = 0.2,
 		action = function(event)
     local consumableId = SpawnObstacle({ Name = "SuperGemDrop", DestinationId =  CurrentRun.Hero.ObjectId, Group = "Standing" })
           local cost = 0
@@ -356,6 +367,7 @@ TwitchIntegrationEvents =
           ActivatedObjects[consumable.ObjectId] = consumable
           ApplyUpwardForce({ Id = consumableId, Speed = 450 })
           PlaySound({ Name = "/Leftovers/World Sounds/TrainingMontageWhoosh", Id = consumableId })
+          consumable.IgnorePurchase = true
 		end,
 	},
 --Charms all enemies in the room (including traps) [This doesn't appear to work. Can't apply weapon effects this way.]
@@ -462,7 +474,7 @@ TwitchIntegrationEvents =
 	{
 		id = "TEMP_BOON_RARITY",
 		ui_name = "Improve next boon",
-		weight = 0.5,
+		weight = 0.3,
 		action = function(event)
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[1] })
 		end,
@@ -471,7 +483,7 @@ TwitchIntegrationEvents =
 	{
 		id = "TEMP_BOON_CHAOS",
 		ui_name = "Chaos Gate",
-		weight = 0.8,
+		weight = 0.6,
 		action = function(event)
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[3] })
 		end,
@@ -480,7 +492,7 @@ TwitchIntegrationEvents =
 	{
 		id = "TEMP_BOON_TROVE",
 		ui_name = "Infernal Trove",
-		weight = 0.7,
+		weight = 0.5,
 		action = function(event)
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[4] })
 		end,
@@ -489,7 +501,7 @@ TwitchIntegrationEvents =
 	{
 		id = "TEMP_BOON_FISHING",
 		ui_name = "Fishing Hole",
-		weight = 0.7,
+		weight = 0.5,
 		action = function(event)
       AddTraitToHero({ TraitName = TwitchIntegrationData.TempItems[5] })
 		end,
@@ -498,7 +510,7 @@ TwitchIntegrationEvents =
 	{
 		id = "TEMP_BOON_LASTSTAND",
 		ui_name = "Refill Defiance",
-		weight = 0.5,
+		weight = 0.3,
 		action = function(event)
 			local consumableName = TwitchIntegrationData.TempItems[6]
       local playerId = GetIdsByType({ Name = "_PlayerUnit" })
@@ -510,6 +522,55 @@ TwitchIntegrationEvents =
       end
 		end,
 	},
+--Spawn minelayer boss battle
+  {
+    id = "SPAWN_MINELAYER_BOSS",
+    ui_name = "Minelayer Boss Battle",
+    weight = 0.7,
+    action = function(event)
+      local EnemyTable = { "ThiefImpulseMineLayerMiniboss", "ThiefMineLayerElite", "ThiefMineLayerElite", "ThiefMineLayer", "ThiefMineLayer", "ThiefMineLayer" }      
+      for _,v in ipairs(EnemyTable) do
+        local enemyData = EnemyData[v]
+        local newEnemy = DeepCopyTable( enemyData )
+        newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
+        SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
+        UseableOff({ Id = newEnemy.ObjectId })
+      end      
+    end,
+  },
+--[[Spawn minelayer boss battle
+  {
+    id = "SPAWN_RATTHUG_BOSS",
+    ui_name = "Rat Thug Boss Battle",
+    weight = 0.7,
+    action = function(event)
+      local EnemyTable = { "RatThugMiniboss", "RatThugElite", "RatThugElite", "RatThug", "RatThug", "RatThug" }      
+      for _,v in ipairs(EnemyTable) do
+        local enemyData = EnemyData[v]
+        local newEnemy = DeepCopyTable( enemyData )
+        newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
+        SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
+        UseableOff({ Id = newEnemy.ObjectId })
+      end      
+    end,
+  },
+--]]
+--Spawn helping hands boss battle
+  {
+    id = "SPAWN_HELPING_HANDS",
+    ui_name = "Helping Hands",
+    weight = 0.7,
+    action = function(event)
+      local EnemyTable = { "DisembodiedHand", "DisembodiedHand", "DisembodiedHand", "DisembodiedHand", "DisembodiedHand", "DisembodiedHand" }
+      for _,v in ipairs(EnemyTable) do
+        local enemyData = EnemyData[v]
+        local newEnemy = DeepCopyTable( enemyData )
+        newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
+        SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
+        UseableOff({ Id = newEnemy.ObjectId })
+      end
+    end,
+  },
 }
 --[[
 
