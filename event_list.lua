@@ -523,21 +523,21 @@ TwitchIntegrationEvents =
 		end,
 	},
 --Spawn minelayer boss battle
-  {
-    id = "SPAWN_MINELAYER_BOSS",
-    ui_name = "Minelayer Boss Battle",
-    weight = 0.7,
-    action = function(event)
-      local EnemyTable = { "ThiefImpulseMineLayerMiniboss", "ThiefMineLayerElite", "ThiefMineLayerElite", "ThiefMineLayer", "ThiefMineLayer", "ThiefMineLayer" }      
-      for _,v in ipairs(EnemyTable) do
-        local enemyData = EnemyData[v]
-        local newEnemy = DeepCopyTable( enemyData )
-        newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
-        SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
-        UseableOff({ Id = newEnemy.ObjectId })
-      end      
-    end,
-  },
+{
+  id = "SPAWN_MINELAYER_BOSS",
+  ui_name = "Minelayer Boss Battle",
+  weight = 0.7,
+  action = function(event)
+    local EnemyTable = { "ThiefImpulseMineLayerMiniboss", "ThiefMineLayerElite", "ThiefMineLayerElite", "ThiefMineLayer", "ThiefMineLayer", "ThiefMineLayer" }      
+    for _,v in ipairs(EnemyTable) do
+      local enemyData = EnemyData[v]
+      local newEnemy = DeepCopyTable( enemyData )
+      newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
+      SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
+      UseableOff({ Id = newEnemy.ObjectId })
+    end      
+  end,
+},
 --[[Spawn minelayer boss battle
   {
     id = "SPAWN_RATTHUG_BOSS",
