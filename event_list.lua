@@ -73,7 +73,7 @@ TwitchIntegrationData =
 	GodNames =
 	{
 		"ZeusUpgrade", "PoseidonUpgrade", "AthenaUpgrade", "AphroditeUpgrade", "ArtemisUpgrade", "AresUpgrade", "DionysusUpgrade", "HermesUpgrade", "DemeterUpgrade", "TrialUpgrade",
-	},	
+	},
   -- 45 enemy entries, minichariot is 9, ThiefImpulseMineLayerMiniboss is 5, ThiefMineLayer is 45
   EnemyNames =
   {
@@ -98,8 +98,8 @@ TwitchIntegrationEvents =
 		ui_name = "Heal me",
 		weight =0.5,
 		action = function(event)
-			
-			
+
+
 			Heal( CurrentRun.Hero, { HealAmount = CurrentRun.Hero.MaxHealth / 10, SourceName = "Item" } )
 			--local hp = CurrentRun.Hero.Health
 			--local newhp = hp + 25
@@ -170,7 +170,7 @@ TwitchIntegrationEvents =
 			for i, traitData in pairs( CurrentRun.Hero.Traits ) do
 				traitnum = traitnum + 1
 			end
-			
+
 			if traitnum > 0 then
 				local index = math.random(traitnum)
 				table.remove(CurrentRun.Hero.Traits,index)
@@ -203,7 +203,7 @@ TwitchIntegrationEvents =
     for i = 1, amount do
       table.insert(EnemyTable,TwitchIntegrationData.EnemyNames[math.random(44)])
     end
-    
+
     for _,v in ipairs(EnemyTable) do
       local enemyData = EnemyData[v]
       local newEnemy = DeepCopyTable( enemyData )
@@ -211,7 +211,7 @@ TwitchIntegrationEvents =
       SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
       UseableOff({ Id = newEnemy.ObjectId })
     end
-    
+
   end,
 },
 	--Give Gold
@@ -394,7 +394,7 @@ TwitchIntegrationEvents =
       for i = 1, amount do
         table.insert(EnemyTable,TwitchIntegrationData.EnemyNames[9])
       end
-      
+
       for _,v in ipairs(EnemyTable) do
         local enemyData = EnemyData[v]
         local newEnemy = DeepCopyTable( enemyData )
@@ -402,7 +402,7 @@ TwitchIntegrationEvents =
         SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
         UseableOff({ Id = newEnemy.ObjectId })
       end
-      
+
     end,
   },
 --Spawn mine-flinging pests
@@ -416,7 +416,7 @@ TwitchIntegrationEvents =
       for i = 1, amount do
         table.insert(EnemyTable,TwitchIntegrationData.EnemyNames[45])
       end
-      
+
       for _,v in ipairs(EnemyTable) do
         local enemyData = EnemyData[v]
         local newEnemy = DeepCopyTable( enemyData )
@@ -424,7 +424,7 @@ TwitchIntegrationEvents =
         SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
         UseableOff({ Id = newEnemy.ObjectId })
       end
-      
+
     end,
   },
 	--Give Chaos Boon
@@ -544,14 +544,14 @@ TwitchIntegrationEvents =
     ui_name = "Rat Thug Boss Battle",
     weight = 0.7,
     action = function(event)
-      local EnemyTable = { "RatThugMiniboss", "RatThugElite", "RatThugElite", "RatThug", "RatThug", "RatThug" }      
+      local EnemyTable = { "RatThugMiniboss", "RatThugElite", "RatThugElite", "RatThug", "RatThug", "RatThug" }
       for _,v in ipairs(EnemyTable) do
         local enemyData = EnemyData[v]
         local newEnemy = DeepCopyTable( enemyData )
         newEnemy.ObjectId = SpawnUnit({ Name = enemyData.Name, Group = "Standing", DestinationId = CurrentRun.Hero.ObjectId, OffsetX = math.random(-500,500), OffsetY = math.random(-500,500) })
         SetupEnemyObject( newEnemy, CurrentRun, { SkipSpawnVoiceLines = true } )
         UseableOff({ Id = newEnemy.ObjectId })
-      end      
+      end
     end,
   },
 --]]

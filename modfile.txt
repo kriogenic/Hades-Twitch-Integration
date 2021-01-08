@@ -2,3 +2,5 @@
 Import "config.lua"
 Import "event_list.lua"
 Import "twitch.lua"
+To "Game/Text/en/HelpText.en.sjson"
+SJSON "helptext.en.sjson"

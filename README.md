@@ -5,8 +5,13 @@ This version has been modified by Kruffles. For the most part, all of the change
 If you find that your votes are only generating 4 of the same option, look for the DEBUGGING section in twitch.lua and set local debugid = nil
 
 Please rename the extracted repository to TwitchIntegration from Hades-Twitch-Integration for the packages to work.
-REQUIRES MODUTILS FOR PRINT DEBUGGING AT THE MOMENT
 
 Config: Set your username and vote times in config.lua
 
 TODO: Add more effects and complete this readme.
+
+# Requirements
+
+Modimporter
+Modimporter's SJSON module
+Mod Utility
