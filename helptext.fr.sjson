@@ -1,0 +1,17 @@
+{
+    Texts = [
+    "_append"
+    {
+      Id = "TwitchIntegration_Choice"
+      DisplayName = "{$TempTextData.ChoiceNum}. {$TempTextData.ChoiceName}  ({$TempTextData.VoteCount})"
+    }
+    {
+      Id = "TwitchIntegration_CurrentVoteTimer"
+      DisplayName = "Fin du vote : {$TempTextData.Time}"
+    }
+    {
+      Id = "TwitchIntegration_NextVoteTimer"
+      DisplayName = "Prochain vote : {$TempTextData.Time}"
+    }
+    ]
+}
