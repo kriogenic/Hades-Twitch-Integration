@@ -309,6 +309,7 @@ function CountdownVote()
 	for j=1, TwitchIntegrationConfig.OfferedChoices do
 		table.insert(votes, 0)
 	end
+	voters = {}
 
 	while not IsInGame() do
 		wait(1)
