@@ -1,3 +1,4 @@
+@@ -1,337 +0,0 @@
 --Mapped to id "HEALTH_PLUS"
 function TwitchHeal25(event)
         Heal( CurrentRun.Hero, { HealAmount = CurrentRun.Hero.MaxHealth / 10, SourceName = "Item" } )
